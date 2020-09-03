@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryAssistantMVC", "DictionaryAssistantMVC\DictionaryAssistantMVC.csproj", "{F6C9D93D-F31C-43D0-A3CA-A3BD4A470BB9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6CB26DBF-880D-4158-ADBC-894603745FEB} = {6CB26DBF-880D-4158-ADBC-894603745FEB}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryAssistantMVC.Dictionary", "DictionaryAssistantMVC.Dictionary\DictionaryAssistantMVC.Dictionary.csproj", "{6CB26DBF-880D-4158-ADBC-894603745FEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6C9D93D-F31C-43D0-A3CA-A3BD4A470BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6C9D93D-F31C-43D0-A3CA-A3BD4A470BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6C9D93D-F31C-43D0-A3CA-A3BD4A470BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6C9D93D-F31C-43D0-A3CA-A3BD4A470BB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CB26DBF-880D-4158-ADBC-894603745FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CB26DBF-880D-4158-ADBC-894603745FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CB26DBF-880D-4158-ADBC-894603745FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CB26DBF-880D-4158-ADBC-894603745FEB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C81B34D7-AA6E-4080-A6F5-CCC61DA72DF4}
+	EndGlobalSection
+EndGlobal
