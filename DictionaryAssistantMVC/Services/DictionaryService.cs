@@ -12,7 +12,8 @@ namespace DictionaryAssistantMVC.Services
 {
     public interface IDictionaryService
     {
-        Task<List<LetterStatistics>> GetTopLetters(int howMany);
+        Task<List<LetterStatistics>> GetTopLettersByCount(int howMany);
+        Task<List<LetterStatistics>> GetAllLettersByCount();
         Task<List<LetterStatistics>> GetAllLetters();
     }
 
@@ -25,7 +26,7 @@ namespace DictionaryAssistantMVC.Services
             this.context = context;
         }
 
-        public async Task<List<LetterStatistics>> GetAllLetters()
+        public async Task<List<LetterStatistics>> GetAllLettersByCount()
         {
             return await context.Letters.OrderByDescending(l => l.CountBeginningWith)
                 .Select(l => new LetterStatistics()
@@ -38,10 +39,23 @@ namespace DictionaryAssistantMVC.Services
                 .ToListAsync();
         }
 
-        public async Task<List<LetterStatistics>> GetTopLetters(int howMany)
+        public async Task<List<LetterStatistics>> GetTopLettersByCount(int howMany)
         {
             return await context.Letters.OrderByDescending(l => l.CountBeginningWith)
                 .Take(howMany)
+                .Select(l => new LetterStatistics()
+                {
+                    Letter = l.Character,
+                    AverageCharacterCount = l.AverageCharacters,
+                    NumberWordsBeginningWith = l.CountBeginningWith,
+                    NumberWordsEndingWith = l.CountEndingWith
+                })
+                .ToListAsync();
+        }
+
+        public async Task<List<LetterStatistics>> GetAllLetters()
+        {
+            return await context.Letters.OrderBy(l => l.Character)
                 .Select(l => new LetterStatistics()
                 {
                     Letter = l.Character,

@@ -21,9 +21,9 @@ namespace DictionaryAssistantMVC.Controllers
         }
 
         [HttpGet("all-letters")]
-        public async Task<IActionResult> GetAllLetters()
+        public async Task<IActionResult> GetAllLettersByCount()
         {
-            List<LetterStatistics> allLetters = await dictionaryService.GetAllLetters();
+            List<LetterStatistics> allLetters = await dictionaryService.GetAllLettersByCount();
 
             if (allLetters == null || allLetters?.Count < 1)
             {
@@ -34,14 +34,14 @@ namespace DictionaryAssistantMVC.Controllers
         }
 
         [HttpGet("top-letters/{howMany:int}")]
-        public async Task<IActionResult> GetTopLetters(int howMany)
+        public async Task<IActionResult> GetTopLettersByCount(int howMany)
         {
             if (howMany > Alphabet.AlphabetCount)
             {
                 return BadRequest(howMany);
             }
 
-            List<LetterStatistics> topLetters = await dictionaryService.GetTopLetters(howMany);
+            List<LetterStatistics> topLetters = await dictionaryService.GetTopLettersByCount(howMany);
 
             if (topLetters == null || topLetters?.Count < 1)
             {
@@ -49,6 +49,19 @@ namespace DictionaryAssistantMVC.Controllers
             }
 
             return Ok(topLetters);
+        }
+
+        [HttpGet("all-statistics")]
+        public async Task<IActionResult> GetAllLetters()
+        {
+            List<LetterStatistics> allLetters = await dictionaryService.GetAllLetters();
+
+            if (allLetters == null || allLetters?.Count < 1)
+            {
+                return NotFound();
+            }
+
+            return Ok(allLetters);
         }
     }
 }
