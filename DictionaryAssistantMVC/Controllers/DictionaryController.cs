@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using DictionaryAssistantMVC.Dictionary;
 using DictionaryAssistantMVC.Services;
-
 
 namespace DictionaryAssistantMVC.Controllers
 {
@@ -62,6 +62,36 @@ namespace DictionaryAssistantMVC.Controllers
             }
 
             return Ok(allLetters);
+        }
+
+        [HttpGet("longest-words/{howMany:int}")]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetLongestWords(int howMany)
+        {
+            Dictionary<char, List<string>> longestWords = await dictionaryService.GetLongestWords(howMany);
+
+            if (longestWords == null || longestWords?.Keys.Count < 1)
+            {
+                return NotFound();
+            }
+
+            // .NET Builtin JSON doesn't support dictionaries?? We'll use Newtonsoft. Okay...  :|
+            // Aaand, ASP.NET-Core will escape the quotes in the JSON if an Ok() is used.  >:(
+            return Content(JsonConvert.SerializeObject(longestWords), "application/json");
+        }
+
+        [HttpGet("shortest-words/{howMany:int}")]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetShortestWords(int howMany)
+        {
+            Dictionary<char, List<string>> shortestWords = await dictionaryService.GetShortestWords(howMany);
+
+            if (shortestWords == null || shortestWords?.Keys.Count < 1)
+            {
+                return NotFound();
+            }
+
+            return Content(JsonConvert.SerializeObject(shortestWords), "application/json");
         }
     }
 }

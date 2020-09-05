@@ -21,3 +21,9 @@ export const getAllLetterStatistics = () =>
               }
           }
       }, {}))
+
+export const getTopFiftyLongest = () =>
+    request(`${BASE_URL}/api/dictionary/longest-words/50`)
+
+export const getTopFiftyShortest = () =>
+    request(`${BASE_URL}/api/dictionary/shortest-words/50`)

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import {
-    getAllWordCounts, getTopWordCounts, getAllLetterStatistics
+    getAllWordCounts, getTopWordCounts, getAllLetterStatistics, getTopFiftyLongest,
+    getTopFiftyShortest
 } from '../../services/api/dictionary'
 
 import ChartDisplay from '../ChartDisplay'
 import LetterStatistics from '../LetterStatistics'
-import { AppTitle, SelectorSection } from './components'
+import WordList from '../WordList'
+import { AppTitle, SelectorSection, WordListHolder } from './components'
 
 // Values for the alphabet
 const ALPHABET_ARRAY = 'abcdefghijklmnopqrstuvwxyz'.split('')
@@ -19,6 +21,9 @@ const App = () => {
     const [graphThis, setGraphThis] = useState(TOP_FIVE)
     // This data is for letter statistics
     const [letterStats, setLetterStats] = useState({})
+    // This data is for longest & shortest Words
+    const [longestWords, setLongestWords] = useState({})
+    const [shortestWords, setShortestWords] = useState({})
     // This data is for the charts
     const [topFiveData, setTopFiveData] = useState([])
     const [allData, setAllData] = useState([])
@@ -31,11 +36,17 @@ const App = () => {
             .then(data => setAllData(data))
             .then(() => getAllLetterStatistics())
             .then(data => setLetterStats(data))
+            .then(() => getTopFiftyLongest())
+            .then(data => setLongestWords(data))
+            .then(() => getTopFiftyShortest())
+            .then(data => setShortestWords(data))
     }, [])
 
     if (allData.length === 0 ||
         topFiveData.length === 0 ||
-        Object.keys(letterStats).length === 0) {
+        Object.keys(letterStats).length === 0 ||
+        Object.keys(shortestWords).length === 0 ||
+        Object.keys(longestWords).length === 0) {
             return (
                 <div>
                     <p>LOADING...</p>
@@ -61,6 +72,11 @@ const App = () => {
             </SelectorSection>
             <section>
                 <LetterStatistics letterData={letterStats[currentLetter]} />
+                <hr />
+                <WordListHolder>
+                    <WordList name="Top 50 Longest Words" wordList={longestWords[currentLetter]} />
+                    <WordList name="Top 50 Shortest Words" wordList={shortestWords[currentLetter]} />
+                </WordListHolder>
             </section>
             <SelectorSection>
                 <p>Select a statistic of the loaded dictionary that you wish to display:</p>
