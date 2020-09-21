@@ -21,6 +21,18 @@ const GlobalStyle = createGlobalStyle`
     section {
         margin: 3em;
     }
+
+    #AddMoreLink {
+        align-self: center;
+        text-align: right;
+    }
+
+    #FileUploadForm {
+        display: flex;
+        flex-direction: column;
+        border: solid 1px gray;
+        padding: 1rem;
+    }
 `
 
 ReactDOM.render(

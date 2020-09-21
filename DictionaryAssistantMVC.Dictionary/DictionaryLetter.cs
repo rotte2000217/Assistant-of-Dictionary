@@ -47,8 +47,15 @@ namespace DictionaryAssistantMVC.Dictionary
                 endWith = words.Count;
             }
 
-            // Get the average character length of all the words that start with `letter`.
-            avgCount = wordsBeginWith.Aggregate(0, (acc, val) => acc + val.Length, avg => avg / wordsBeginWith.Count);
+            if (wordsBeginWith.Count > 0)
+            {
+                // Get the average character length of all the words that start with `letter`.
+                avgCount = wordsBeginWith.Aggregate(0, (acc, val) => acc + val.Length, avg => avg / wordsBeginWith.Count);
+            }
+            else
+            {
+                avgCount = 0;
+            }
 
             return new DictionaryLetter(beginWith, endWith, avgCount, wordsBeginWith);
         }

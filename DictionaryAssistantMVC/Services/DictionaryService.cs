@@ -6,12 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using DictionaryAssistantMVC.Contexts;
 using DictionaryAssistantMVC.Models;
 using DictionaryAssistantMVC.Dictionary;
-
+using System.IO;
+using DictionaryAssistantMVC.Dictionary.Loader;
 
 namespace DictionaryAssistantMVC.Services
 {
     public interface IDictionaryService
     {
+        Task<int> AddWordsToDictionary(Stream wordStream);
         Task<List<LetterStatistics>> GetTopLettersByCount(int howMany);
         Task<List<LetterStatistics>> GetAllLettersByCount();
         Task<List<LetterStatistics>> GetAllLetters();
@@ -26,6 +28,79 @@ namespace DictionaryAssistantMVC.Services
         public DictionaryService(DictionaryContext context)
         {
             this.context = context;
+        }
+
+        public async Task<int> AddWordsToDictionary(Stream wordStream)
+        {
+            int wordsAdded = 0;
+
+            // Dictionary corresponding to the to-be-added wordlist
+            ActiveDictionary addDictionary;
+            try
+            {
+                addDictionary = Loader.LoadDictionary(wordStream);
+            }
+            catch (FileLoadException)
+            {
+                // Empty, Abort
+                return 0;
+            }
+
+            // Dictionary corresponding to the in-database wordlist
+            var dbDictionary = context.GetWordDictionaryForContext();
+
+            List<char> lettersToUpdate = new List<char>();
+            foreach (char c in new Alphabet())
+            {
+                // This actually populates `addDictionary`.
+                var letter = DictionaryLetter.InitializeDictionaryLetter(c, addDictionary);
+                
+                if (letter.NumberWordsBeginningWith > 0 || letter.NumberWordsEndingWith > 0)
+                {
+                    lettersToUpdate.Add(c);
+                }
+            }
+
+            // Get the actual entities from the DB
+            List<Letter> letters = await context.Letters.Where(letter => lettersToUpdate.Contains(letter.Character))
+                .OrderBy(letter => letter.Character)
+                .ToListAsync();
+
+            try
+            {
+                foreach (var letter in letters)
+                {
+                    var addTheseWords = addDictionary.GetDictionaryWordsStartingWith(letter.Character)
+                        .Select(word => new Word() { TheWord = word, Letter = letter });
+
+                    wordsAdded += addTheseWords.Count();
+                    context.Words.AddRange(addTheseWords);
+                }
+            }
+            finally
+            {
+                await context.SaveChangesAsync();
+            }
+
+            // Changes must be saved prior to getting updated states. fml -.-
+            try
+            {
+                foreach (var letter in letters)
+                {
+                    // Update Letter Statistics
+                    var updatedLetterStats = DictionaryLetter.InitializeDictionaryLetter(letter.Character, dbDictionary);
+                    letter.AverageCharacters = updatedLetterStats.AverageCharacterCount;
+                    letter.CountBeginningWith = updatedLetterStats.NumberWordsBeginningWith;
+                    letter.CountEndingWith = updatedLetterStats.NumberWordsEndingWith;
+                    context.Letters.Update(letter);
+                }
+            }
+            finally
+            {
+                await context.SaveChangesAsync();
+            }
+
+            return wordsAdded;
         }
 
         public async Task<List<LetterStatistics>> GetAllLettersByCount()

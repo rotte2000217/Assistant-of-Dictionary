@@ -1,4 +1,4 @@
-import request from './request'
+import request, { crudOperation } from './request'
 import BASE_URL from './server'
 
 export const getAllWordCounts = () =>
@@ -27,3 +27,15 @@ export const getTopFiftyLongest = () =>
 
 export const getTopFiftyShortest = () =>
     request(`${BASE_URL}/api/dictionary/shortest-words/50`)
+
+export const postDictionaryList = (listData) =>
+    crudOperation(
+        `${BASE_URL}/api/dictionary/add-words`,
+        'POST',
+        null,
+        {
+            body: listData
+        }
+    )
+    .then(response => response.text())
+    .then(wordsAdded => Number.parseInt(wordsAdded))

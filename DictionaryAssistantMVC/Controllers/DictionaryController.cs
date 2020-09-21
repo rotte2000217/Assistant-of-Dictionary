@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using DictionaryAssistantMVC.Dictionary;
 using DictionaryAssistantMVC.Services;
+using DictionaryAssistantMVC.Dictionary;
+
 
 namespace DictionaryAssistantMVC.Controllers
 {
@@ -92,6 +94,20 @@ namespace DictionaryAssistantMVC.Controllers
             }
 
             return Content(JsonConvert.SerializeObject(shortestWords), "application/json");
+        }
+
+        [HttpPost("add-words")]
+        [Produces("text/plain")]
+        public async Task<IActionResult> AddWords(IFormFile wordListFile)
+        {
+            int numberAdded = 0;
+
+            using (var stream = wordListFile.OpenReadStream())
+            {
+                numberAdded = await dictionaryService.AddWordsToDictionary(stream);
+            }
+
+            return Content(numberAdded.ToString(), "text/plain");
         }
     }
 }
