@@ -49,22 +49,13 @@ namespace DictionaryAssistantMVC.Services
             // Dictionary corresponding to the in-database wordlist
             var dbDictionary = context.GetWordDictionaryForContext();
 
-            List<char> lettersToUpdate = new List<char>();
-            foreach (char c in new Alphabet())
-            {
-                // This actually populates `addDictionary`.
-                var letter = DictionaryLetter.InitializeDictionaryLetter(c, addDictionary);
-                
-                if (letter.NumberWordsBeginningWith > 0 || letter.NumberWordsEndingWith > 0)
-                {
-                    lettersToUpdate.Add(c);
-                }
-            }
+            var lettersToUpdate = addDictionary.GetAllDictionaryLetters().Select(dl => dl.Letter).ToList();
 
             // Get the actual entities from the DB
-            List<Letter> letters = await context.Letters.Where(letter => lettersToUpdate.Contains(letter.Character))
-                .OrderBy(letter => letter.Character)
-                .ToListAsync();
+            List<Letter> letters =
+                await context.Letters.Where(letter => lettersToUpdate.Contains(letter.Character))
+                    .OrderBy(letter => letter.Character)
+                    .ToListAsync();
 
             try
             {

@@ -22,22 +22,22 @@ namespace DictionaryAssistantMVC.Contexts
             {
                 var dictionary = Loader.LoadDictionary(Path.Combine(Directory.GetCurrentDirectory(), "seed_words.txt"));
 
-                foreach (char letter in new Alphabet())
+                foreach (var dictLetter in dictionary.GetAllDictionaryLetters())
                 {
-                    var letterData = DictionaryLetter.InitializeDictionaryLetter(letter, dictionary);
-
                     // Create Letter Entities
                     var createdLetter = context.Letters.Add(
                         new Letter()
                         {
-                            Character = letter, 
-                            AverageCharacters = letterData.AverageCharacterCount, 
-                            CountBeginningWith = letterData.NumberWordsBeginningWith, 
-                            CountEndingWith = letterData.NumberWordsEndingWith 
+                            Character = dictLetter.Letter,
+                            AverageCharacters = dictLetter.AverageCharacterCount,
+                            CountBeginningWith = dictLetter.NumberWordsBeginningWith,
+                            CountEndingWith = dictLetter.NumberWordsEndingWith
                         });
 
                     // Create Associated Word Entities
-                    var createdWords = letterData.WordsBeginningWith.Select(w => new Word() { TheWord = w, Letter = createdLetter.Entity });
+                    var createdWords =
+                        dictLetter.WordsBeginningWith.Select(w => new Word() { TheWord = w, Letter = createdLetter.Entity });
+                    
                     context.Words.AddRange(createdWords);
                 }
 

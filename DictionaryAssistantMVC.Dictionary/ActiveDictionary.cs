@@ -1,57 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DictionaryAssistantMVC.Dictionary.Exceptions;
 
 namespace DictionaryAssistantMVC.Dictionary
 {
-    public class ActiveDictionary : IWordDictionary
+    public class ActiveDictionary : WordDictionaryBase
     {
-        private readonly List<string> allDictionaryWords;
-        private readonly Dictionary<char, List<String>> wordsEndingWith;
-        private readonly Dictionary<char, List<String>> wordsStartingWith;
+        private SortedSet<DictionaryLetter> dictionaryLetters;
 
         public ActiveDictionary(List<string> allDictionaryWords)
+            : base(allDictionaryWords)
         {
-            this.allDictionaryWords = allDictionaryWords;
-            wordsEndingWith = new Dictionary<char, List<string>>();
-            wordsStartingWith = new Dictionary<char, List<string>>();
+            dictionaryLetters = null;
         }
 
-        /* Implements IWordDictionary: */
-
-        public List<string> GetDictionaryWords()
+        public override ICollection<DictionaryLetter> GetAllDictionaryLetters()
         {
-            return allDictionaryWords;
-        }
-
-        public List<string> GetDictionaryWordsEndingWith(char letter)
-        {
-            if (!wordsEndingWith.ContainsKey(letter))
+            if (dictionaryLetters == null)
             {
-                throw new WordEndingNotFoundException();
+                CreateLetters();
             }
 
-            return wordsEndingWith[letter];
+            return dictionaryLetters;
         }
 
-        public List<string> GetDictionaryWordsStartingWith(char letter)
+        public override DictionaryLetter GetDictionaryLetter(char letter)
         {
-            if (!wordsStartingWith.ContainsKey(letter))
+            if (dictionaryLetters == null)
             {
-                throw new WordStartingNotFoundException();
+                CreateLetters();
             }
 
-            return wordsStartingWith[letter];
+            try
+            {
+                return dictionaryLetters.Where(dl => dl.Letter == letter).First();
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
         }
 
-        public void SaveWordsForLettersEnding(char letter, List<string> words)
+        private void CreateLetters()
         {
-            wordsEndingWith[letter] = words;
-        }
+            dictionaryLetters = new SortedSet<DictionaryLetter>(new DictionaryLetterComparer());
 
-        public void SaveWordsForLetterStarting(char letter, List<string> words)
-        {
-            wordsStartingWith[letter] = words;
+            foreach (char c in new Alphabet())
+            {
+                var letter = DictionaryLetter.InitializeDictionaryLetter(c, this);
+
+                if (letter.NumberWordsBeginningWith > 0 || letter.NumberWordsEndingWith > 0)
+                {
+                    dictionaryLetters.Add(letter);
+                }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DictionaryAssistantMVC.Dictionary.Exceptions;
 
@@ -7,6 +8,7 @@ namespace DictionaryAssistantMVC.Dictionary
 {
     public class DictionaryLetter
     {
+        public char Letter { get; private set; }
         public int AverageCharacterCount { get; private set; }
         public int NumberWordsBeginningWith { get; private set; }
         public int NumberWordsEndingWith { get; private set; }
@@ -57,7 +59,7 @@ namespace DictionaryAssistantMVC.Dictionary
                 avgCount = 0;
             }
 
-            return new DictionaryLetter(beginWith, endWith, avgCount, wordsBeginWith);
+            return new DictionaryLetter(letter, beginWith, endWith, avgCount, wordsBeginWith);
         }
 
         public List<string> GetLongestWords()
@@ -70,12 +72,24 @@ namespace DictionaryAssistantMVC.Dictionary
             return WordsBeginningWith.Where(s => s.Length < AverageCharacterCount).ToList();
         }
 
-        protected DictionaryLetter(int beginWith, int endWith, int avgCount, List<string> wordsBeginingWith)
+        protected DictionaryLetter(char letter, int beginWith, int endWith, int avgCount, List<string> wordsBeginingWith)
         {
+            Letter = letter;
             AverageCharacterCount = avgCount;
             NumberWordsBeginningWith = beginWith;
             NumberWordsEndingWith = endWith;
             WordsBeginningWith = wordsBeginingWith;
+        }
+    }
+
+    internal class DictionaryLetterComparer : Comparer<DictionaryLetter>
+    {
+        public override int Compare([AllowNull] DictionaryLetter x, [AllowNull] DictionaryLetter y)
+        {
+            char? letterX = x?.Letter;
+            char? letterY = y?.Letter;
+
+            return letterX.Value.CompareTo(letterY.Value);
         }
     }
 }
