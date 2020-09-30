@@ -29,6 +29,8 @@ const Home = () => {
     // This data is for the charts
     const [topFiveData, setTopFiveData] = useState([])
     const [allData, setAllData] = useState([])
+    // For failures :(
+    const [errorInfo, setErrorInfo] = useState({ failed: false, error: null })
 
     // Run on component mount
     useEffect(() => {
@@ -42,7 +44,17 @@ const Home = () => {
             .then(data => setLongestWords(data))
             .then(() => getTopFiftyShortest())
             .then(data => setShortestWords(data))
+            .catch(error => setErrorInfo({ failed: true, error: error }))
     }, [])
+
+    if (errorInfo.failed === true) {
+        return (
+            <div>
+                <h3>ERROR</h3>
+                <p>{errorInfo.error.toString()}</p>
+            </div>
+        )
+    }
 
     if (allData.length === 0 ||
         topFiveData.length === 0 ||
