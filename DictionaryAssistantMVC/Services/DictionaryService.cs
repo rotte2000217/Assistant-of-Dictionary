@@ -64,8 +64,7 @@ namespace DictionaryAssistantMVC.Services
                     var addTheseWords = addDictionary.GetDictionaryWordsStartingWith(letter.Character)
                         .Select(word => new Word() { TheWord = word, Letter = letter });
 
-                    wordsAdded += addTheseWords.Count();
-                    context.Words.AddRange(addTheseWords);
+                    wordsAdded += context.AddWordEntities(addTheseWords);
                 }
             }
             finally

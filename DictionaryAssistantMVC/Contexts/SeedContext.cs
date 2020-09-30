@@ -37,8 +37,8 @@ namespace DictionaryAssistantMVC.Contexts
                     // Create Associated Word Entities
                     var createdWords =
                         dictLetter.WordsBeginningWith.Select(w => new Word() { TheWord = w, Letter = createdLetter.Entity });
-                    
-                    context.Words.AddRange(createdWords);
+
+                    _ = context.AddWordEntities(createdWords, true);
                 }
 
                 context.SaveChanges();

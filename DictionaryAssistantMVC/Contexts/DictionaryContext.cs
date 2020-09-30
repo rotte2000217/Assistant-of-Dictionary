@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using DictionaryAssistantMVC.Dictionary;
 using DictionaryAssistantMVC.Models;
+using DictionaryAssistantMVC.Utils;
 
 namespace DictionaryAssistantMVC.Contexts
 {
@@ -17,6 +18,46 @@ namespace DictionaryAssistantMVC.Contexts
 
         public DbSet<Word> Words { get; set; }
         public DbSet<Letter> Letters { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Word>()
+                .HasIndex(w => w.TheWord)
+                .IsUnique();
+        }
+
+        public int AddWordEntities(IEnumerable<Word> words, bool seeding)
+        {
+            int countAdded = 0;
+
+            // Prevent duplicate words in `words` from being enumerated on
+            foreach (var word in words.ToHashSet(new WordComparer()))
+            {
+                // `seeding` should only be true if being called from the SeedContext.
+                if (seeding == false)
+                {
+                    bool alreadyInDatabase = this.Words.Where(w => w.TheWord == word.TheWord).Any();
+
+                    if (alreadyInDatabase == false)
+                    {
+                        this.Words.Add(word);
+                        countAdded += 1;
+                    }
+                }
+                else
+                {
+                    this.Words.Add(word);
+                    countAdded += 1;
+                }
+            }
+
+            return countAdded;
+        }
+
+        public int AddWordEntities(IEnumerable<Word> words)
+        {
+            return AddWordEntities(words, false);
+        }
 
         public ContextDictionary GetWordDictionaryForContext()
         {
