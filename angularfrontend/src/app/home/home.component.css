@@ -1,0 +1,16 @@
+#AddMoreLink {
+    align-self: center;
+    text-align: right;
+}
+
+section.selector-section {
+    border: rgba(128,128,128,0.25) 1px solid;
+    padding: 0.75em;
+    display: flex;
+}
+.selector-section * {
+    flex-grow: 0.25;
+}
+.selector-section select {
+    margin: 1em;
+}
