@@ -1,1 +1,18 @@
-<p>upload works!</p>
+<ng-template [ngIf]="uploadStatus != constants.UPLOAD_NOT_STARTED">
+    <p>TODO: StatusMessage Component</p>
+    <p>STATUS: {{uploadStatus}}</p>
+</ng-template>
+<section>
+    <form [formGroup]="uploadForm" id="FileUploadForm" encType="multipart/form-data" (ngSubmit)="onUploadFormSubmit($event)">
+        <label for="FilePicker">
+            Word List to Upload:
+        </label>
+        <input type="file" id="FilePicker" accept=".txt" formControlName="filePicker" required />
+        <button type="button" (click)="onUploadFormGoBackClick($event)">
+            Go Back
+        </button>
+        <button type="submit">
+            Add Words To Dictionary
+        </button>
+    </form>
+</section>

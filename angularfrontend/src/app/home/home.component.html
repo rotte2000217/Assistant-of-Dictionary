@@ -16,20 +16,20 @@
 <section class="selector-section">
     <p>Select a statistic of the loaded dictionary that you wish to display: </p>
     <select name="whatToGraph" value={{graphThis}} (change)="onWhatToGraphChange($event)">
-        <option value="1"><!-- TOP_FIVE -->
+        <option value={{constants.TOP_FIVE}}>
             Top 5 Words in Dictionary
         </option>
-        <option value="2"><!-- ALL_OF_THEM -->
+        <option value={{constants.ALL_OF_THEM}}>
             All Words in Dictionary
         </option>
     </select>
 </section>
-<ng-template [ngIf]="graphThis == 1"><!-- graphThis == TOP_FIVE -->
+<ng-template [ngIf]="graphThis == constants.TOP_FIVE">
     <section>
         <p>TODO: Top Five chart</p>
     </section>
 </ng-template>
-<ng-template [ngIf]="graphThis == 2"><!-- graphThis == ALL_OF_THEM -->
+<ng-template [ngIf]="graphThis == constants.ALL_OF_THEM">
     <section>
         <p>TODO: All words chart</p>
     </section>

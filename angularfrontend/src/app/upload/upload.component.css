@@ -1,0 +1,6 @@
+#FileUploadForm {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px gray;
+    padding: 1rem;
+}
