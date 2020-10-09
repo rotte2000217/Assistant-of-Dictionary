@@ -1,6 +1,6 @@
 <ng-template [ngIf]="uploadStatus != constants.UPLOAD_NOT_STARTED">
-    <p>TODO: StatusMessage Component</p>
-    <p>STATUS: {{uploadStatus}}</p>
+    <upload-statusmessage [currentStatus]="uploadStatus" [wordsAdded]="numWordsAdded" (btnClick)="onStatusMessageBtnClick()">
+    </upload-statusmessage>
 </ng-template>
 <section>
     <form [formGroup]="uploadForm" id="FileUploadForm" encType="multipart/form-data" (ngSubmit)="onUploadFormSubmit($event)">

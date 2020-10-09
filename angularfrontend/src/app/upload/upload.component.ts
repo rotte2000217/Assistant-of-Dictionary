@@ -16,6 +16,7 @@ export class UploadComponent implements OnInit {
 
     uploadForm: FormGroup;
     uploadStatus: number;
+    numWordsAdded: number;
 
     constructor(
         private router: Router,
@@ -26,6 +27,7 @@ export class UploadComponent implements OnInit {
         });
 
         this.uploadStatus = UploadComponent.UPLOAD_NOT_STARTED;
+        this.numWordsAdded = 0;
     }
 
     ngOnInit(): void {
@@ -44,6 +46,10 @@ export class UploadComponent implements OnInit {
 
     onUploadFormGoBackClick(e: any) {
         e.preventDefault();
+        this.navigateToHome();
+    }
+
+    onStatusMessageBtnClick() {
         this.navigateToHome();
     }
 

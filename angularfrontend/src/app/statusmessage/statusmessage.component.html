@@ -1,0 +1,12 @@
+<section class="message-container" [ngClass]="{'successful': isSuccessful, 'failed': isFailed, 'pending': isPending}">
+    <h4 *ngIf="isSuccessful">SUCCESS</h4>
+    <h4 *ngIf="isFailed">FAILED</h4>
+    <h4 *ngIf="isPending">PENDING</h4>
+
+    <div class="children-container">
+        <p>Words Added: {{wordsAdded}}</p>
+        <button type="button" (click)="onOkayClick($event)">
+            OK
+        </button>
+    </div>
+</section>

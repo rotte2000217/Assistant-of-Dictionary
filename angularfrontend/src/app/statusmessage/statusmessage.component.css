@@ -1,0 +1,29 @@
+.message-container {
+    display: flex;
+}
+.message-container > h4 {
+    flex-grow: 0.05;
+}
+.message-container > div {
+    flex-grow: 1;
+}
+
+.message-container.successful {
+    background-color: lightgreen;
+}
+.message-container.failed {
+    background-color: red;
+}
+.message-container.pending {
+    background-color: lightgray;
+}
+
+.children-container {
+    display: flex;
+}
+.children-container > p {
+    flex-grow: 1;
+}
+.children-container > button {
+    flex-grow: 0.125;
+}

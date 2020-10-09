@@ -6,12 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { UploadComponent } from './upload/upload.component';
+import { StatusMessageComponent } from './statusmessage/statusmessage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    UploadComponent
+    UploadComponent,
+    StatusMessageComponent
   ],
   imports: [
     BrowserModule,
