@@ -1,36 +1,51 @@
-<section class="selector-section">
-    <p>Select a letter of the alphabet to view statistics about: </p>
-    <select name="specificLetter" value={{currentLetter}} (change)="onSpecificLetterChange($event)">
-        <ng-template ngFor let-item [ngForOf]="alphabet">
-            <option value={{item}}>
-                {{item | uppercase}}
-            </option>
+<ng-template [ngIf]="!errorInfo.failed" [ngIfElse]="errorHappened">
+    <div *ngIf="loading">
+        <p>LOADING...</p>
+    </div>
+    <div *ngIf="!loading">
+        <section class="selector-section">
+            <p>Select a letter of the alphabet to view statistics about: </p>
+            <select name="specificLetter" value={{currentLetter}} (change)="onSpecificLetterChange($event)">
+                <ng-template ngFor let-item [ngForOf]="alphabet">
+                    <option value={{item}}>
+                        {{item | uppercase}}
+                    </option>
+                </ng-template>
+            </select>
+            <a id="AddMoreLink" [routerLink]="['/addwords']">Add More Words</a>
+        </section>
+        <section>
+            <p>TODO: LETTER STATISTICS</p>
+            <p>TODO: WORD LISTS</p>
+        </section>
+        <section class="selector-section">
+            <p>Select a statistic of the loaded dictionary that you wish to display: </p>
+            <select name="whatToGraph" [(ngModel)]="graphThis" (change)="onWhatToGraphChange($event)">
+                <option value={{constants.TOP_FIVE}}>
+                    Top 5 Words in Dictionary
+                </option>
+                <option value={{constants.ALL_OF_THEM}}>
+                    All Words in Dictionary
+                </option>
+            </select>
+        </section>
+        <ng-template [ngIf]="graphThis == constants.TOP_FIVE">
+            <section>
+                <home-chart [chartName]="topChartLabel" [wordCounts]="topFiveWordCounts">
+                </home-chart>
+            </section>
         </ng-template>
-    </select>
-    <a id="AddMoreLink" [routerLink]="['/addwords']">Add More Words</a>
-</section>
-<section>
-    <p>TODO: LETTER STATISTICS</p>
-    <p>TODO: WORD LISTS</p>
-</section>
-<section class="selector-section">
-    <p>Select a statistic of the loaded dictionary that you wish to display: </p>
-    <select name="whatToGraph" value={{graphThis}} (change)="onWhatToGraphChange($event)">
-        <option value={{constants.TOP_FIVE}}>
-            Top 5 Words in Dictionary
-        </option>
-        <option value={{constants.ALL_OF_THEM}}>
-            All Words in Dictionary
-        </option>
-    </select>
-</section>
-<ng-template [ngIf]="graphThis == constants.TOP_FIVE">
-    <section>
-        <p>TODO: Top Five chart</p>
-    </section>
+        <ng-template [ngIf]="graphThis == constants.ALL_OF_THEM">
+            <section>
+                <home-chart [chartName]="allChartLabel" [wordCounts]="allWordCounts">
+                </home-chart>
+            </section>
+        </ng-template>
+    </div>
 </ng-template>
-<ng-template [ngIf]="graphThis == constants.ALL_OF_THEM">
-    <section>
-        <p>TODO: All words chart</p>
-    </section>
+<ng-template #errorHappened>
+    <div>
+        <h3>ERROR</h3>
+        <p>{{errorInfo.error.message}}</p>
+    </div>
 </ng-template>
