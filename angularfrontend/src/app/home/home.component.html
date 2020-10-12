@@ -15,7 +15,18 @@
             <a id="AddMoreLink" [routerLink]="['/addwords']">Add More Words</a>
         </section>
         <section>
-            <p>TODO: LETTER STATISTICS</p>
+            <div class="letter-statistics">
+                <p data-statistic="begin">
+                    {{letterStats[currentLetter].numberWordsBeginningWith}}
+                </p>
+                <p data-statistic="end">
+                    {{letterStats[currentLetter].numberWordsEndingWith}}
+                </p>
+                <p data-statistic="average">
+                    {{letterStats[currentLetter].averageCharacterCount}}
+                </p>
+            </div>
+            <hr />
             <p>TODO: WORD LISTS</p>
         </section>
         <section class="selector-section">

@@ -14,3 +14,17 @@ section.selector-section {
 .selector-section select {
     margin: 1em;
 }
+
+.letter-statistics p::before {
+    font-weight: bold;
+    padding-right: 1rem;
+}
+p[data-statistic="begin"]::before {
+    content: 'Number of Words Beginning with Letter:';
+}
+p[data-statistic="end"]::before {
+    content: 'Number of Words Ending with Letter:';
+}
+p[data-statistic="average"]::before {
+    content: 'Average Number of Characters in Words with Letter:';
+}
