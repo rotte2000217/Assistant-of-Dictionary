@@ -27,6 +27,8 @@ export class HomeComponent implements OnInit {
     alphabet: Array<string> = 'abcdefghijklmnopqrstuvwxyz'.split('');
     topChartLabel: string = 'Top Five';
     allChartLabel: string = 'All Words';
+    shortListLabel: string = 'Top 50 Shortest Words';
+    longListLabel: string = 'Top 50 Longest Words';
     currentLetter: string;
     errorInfo: LoadingError;
     graphThis: number;

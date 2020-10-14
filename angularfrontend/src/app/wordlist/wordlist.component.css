@@ -1,0 +1,17 @@
+.list-box {
+    margin-top: 1em;
+    max-height: 10em;
+    overflow-y: scroll;
+    border: rgba(128,128,128,0.25) 1px solid;
+}
+
+.list-box-items {
+    padding: 0px;
+    margin: 8px;
+}
+.list-box-items > li {
+    list-style: none;
+}
+.list-box-items > li:hover {
+    background-color: rgba(255,168,187,0.25);
+}

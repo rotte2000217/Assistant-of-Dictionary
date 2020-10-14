@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { UploadComponent } from './upload/upload.component';
 import { StatusMessageComponent } from './statusmessage/statusmessage.component';
 import { ChartComponent } from './chart/chart.component';
+import { WordListComponent } from './wordlist/wordlist.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ChartComponent } from './chart/chart.component';
     HomeComponent,
     UploadComponent,
     StatusMessageComponent,
-    ChartComponent
+    ChartComponent,
+    WordListComponent
   ],
   imports: [
     BrowserModule,

@@ -27,7 +27,13 @@
                 </p>
             </div>
             <hr />
-            <p>TODO: WORD LISTS</p>
+            <div class="word-list-holder">
+                <home-wordlist [wordListTitle]="longListLabel" [wordList]="longestWords[currentLetter]">
+                </home-wordlist>
+
+                <home-wordlist [wordListTitle]="shortListLabel" [wordList]="shortestWords[currentLetter]">
+                </home-wordlist>
+            </div>
         </section>
         <section class="selector-section">
             <p>Select a statistic of the loaded dictionary that you wish to display: </p>

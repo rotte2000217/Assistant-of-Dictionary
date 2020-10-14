@@ -28,3 +28,11 @@ p[data-statistic="end"]::before {
 p[data-statistic="average"]::before {
     content: 'Average Number of Characters in Words with Letter:';
 }
+
+div.word-list-holder {
+    display: flex;
+}
+.word-list-holder > * {
+    flex-grow: 0.5;
+    margin: 0 1em 0 1em;
+}
