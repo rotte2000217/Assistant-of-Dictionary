@@ -72,4 +72,14 @@ export class DictionaryService {
                 catchError(() => of(undefined))
             );
     }
+
+    postDictionaryList(listData: FormData): Observable<number> {
+        const url = `${DictionaryService.DICTIONARY_API_URL}/add-words`;
+        return this.httpClient
+            .post<string>(url, listData)
+            .pipe(
+                map(resp => Number.parseInt(resp)),
+                catchError(() => of(undefined))
+            );
+    }
 }
